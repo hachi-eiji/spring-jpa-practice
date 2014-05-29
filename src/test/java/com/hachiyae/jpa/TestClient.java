@@ -2,13 +2,9 @@ package com.hachiyae.jpa;
 
 import com.hachiyae.jpa.entity.Customer;
 import com.hachiyae.jpa.helper.CustomerHelper;
-import com.hachiyae.jpa.helper.TestDataHelper;
 import com.hachiyae.jpa.repository.CustomerRepository;
-import org.apache.commons.beanutils.BeanUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -41,7 +37,7 @@ public class TestClient {
         Map<String, Object> data = new HashMap<>();
         data.put("firstName", "あああ");
         CustomerHelper helper = new CustomerHelper();
-        Customer customer = helper.create(data);
+        Customer customer = helper.createData(data);
         Customer save = customerRepository.save(customer);
 
         Customer actual = customerRepository.findOne(save.getId());
@@ -55,7 +51,7 @@ public class TestClient {
         data.put("firstName", "あああ");
         data.put("secondName", null);
         CustomerHelper helper = new CustomerHelper();
-        Customer customer = helper.create(data);
+        Customer customer = helper.createData(data);
         Customer save = customerRepository.save(customer);
 
         Customer actual = customerRepository.findOne(save.getId());

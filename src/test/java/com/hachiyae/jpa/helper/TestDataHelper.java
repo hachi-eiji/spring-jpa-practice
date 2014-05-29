@@ -12,16 +12,16 @@ import java.util.Map;
  */
 public abstract class TestDataHelper<T> {
     /**
-     * Create test data.
+     * Create a test data object.
      * <p/>
-     * merge <code>data</code> and return value of defaultData method.
+     * merge <code>recode</code> and return value of defaultData method.
      *
-     * @param record test data. key:column name, value:data
-     * @return merged data
+     * @param record test data. key:column name, value:test data
+     * @return Entity object
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public T create(Map<String, Object> record) throws Exception {
+    public T createData(Map<String, Object> record) throws Exception {
         Class<? extends TestDataHelper> aClass = this.getClass();
         ParameterizedType type = (ParameterizedType) aClass.getGenericSuperclass();
         Class<?> entityClass = (Class<?>) type.getActualTypeArguments()[0];
@@ -32,7 +32,7 @@ public abstract class TestDataHelper<T> {
     }
 
     /**
-     * create default data.
+     * create a default test data.
      * <p/>
      * implements subclass
      *
