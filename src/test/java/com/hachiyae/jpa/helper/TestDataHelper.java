@@ -16,18 +16,18 @@ public abstract class TestDataHelper<T> {
      * <p/>
      * merge <code>data</code> and return value of defaultData method.
      *
-     * @param data test data
+     * @param record test data. key:column name, value:data
      * @return merged data
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public T create(Map<String, Object> data) throws Exception {
+    public T create(Map<String, Object> record) throws Exception {
         Class<? extends TestDataHelper> aClass = this.getClass();
         ParameterizedType type = (ParameterizedType) aClass.getGenericSuperclass();
         Class<?> entityClass = (Class<?>) type.getActualTypeArguments()[0];
         T instance = (T) entityClass.newInstance();
         BeanUtils.copyProperties(instance, defaultData());
-        BeanUtils.copyProperties(instance, data);
+        BeanUtils.copyProperties(instance, record);
         return instance;
     }
 
