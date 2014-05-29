@@ -22,20 +22,21 @@
         <property name="targetDataSource" ref="dataSource"/>
     </bean>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:13306/test?useUnicode=true&amp;characterEncoding=utf-8"/>
-        <property name="username" value="test"/>
-        <property name="password" value="test"/>
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:mem:test;MODE=MYSQL"/>
+        <property name="username" value="sa"/>
+        <property name="password" value="sa"/>
     </bean>
 
     <bean id="jpaVendorAdaptor" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="showSql" value="false"/>
+        <property name="showSql" value="true"/>
         <property name="generateDdl" value="false"/>
-        <property name="database" value="MYSQL"/>
+        <property name="database" value="H2"/>
     </bean>
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
     <util:map id="jpaPropertyMap">
-        <entry key="hibernate.format_sql" value="false"/>
+        <entry key="hibernate.hbm2ddl.auto" value="create-drop"/>
+        <entry key="hibernate.format_sql" value="true"/>
         <entry key="hibernate.connection.provider_class"
                value="org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl"/>
     </util:map>

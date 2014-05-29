@@ -1,8 +1,6 @@
 package com.hachiyae.jpa.entity;
 
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "customer")
 public class Customer implements Serializable {
-
+    private static final long serialVersionUID = -2536573053515926184L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
