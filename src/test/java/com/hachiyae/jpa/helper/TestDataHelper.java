@@ -38,5 +38,5 @@ public abstract class TestDataHelper<T> {
      *
      * @return default data
      */
-    public abstract Map<String, Object> defaultData();
+    public abstract T defaultData();
 }
