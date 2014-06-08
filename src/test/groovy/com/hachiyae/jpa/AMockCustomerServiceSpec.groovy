@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
-@ContextConfiguration(locations = "classpath:spring-mysql-test.xml")
 class AMockCustomerServiceSpec extends Specification {
-    @Autowired
-    CustomerService customerService;
+    CustomerService customerService = new CustomerService();
 
     def "test"() {
         setup:
