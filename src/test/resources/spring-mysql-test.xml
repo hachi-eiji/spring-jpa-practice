@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--<context:component-scan base-package="com.hachiyae.jpa" scoped-proxy="targetClass"/>-->
+    <context:component-scan base-package="com.hachiyae.jpa" scoped-proxy="targetClass"/>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- トランザクション管理下に置く -->
+    <bean id="dataSourceProxy" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+        <property name="targetDataSource" ref="dataSource"/>
+    </bean>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:13306/test?useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="test"/>
+        <property name="password" value="test"/>
+        <!--<property name="defaultAutoCommit" value="true"/>-->
+        <property name="defaultAutoCommit" value="true"/>
+    </bean>
+
+    <bean id="jpaVendorAdaptor" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="true"/>
+        <property name="generateDdl" value="false"/>
+        <property name="database" value="MYSQL"/>
+    </bean>
+    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+    <util:map id="jpaPropertyMap">
+        <entry key="hibernate.hbm2ddl.auto" value="update"/>
+        <entry key="hibernate.format_sql" value="true"/>
+        <entry key="hibernate.connection.provider_class"
+               value="org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl"/>
+    </util:map>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="jpaVendorAdapter" ref="jpaVendorAdaptor"/>
+        <property name="jpaDialect" ref="jpaDialect"/>
+        <property name="jpaPropertyMap" ref="jpaPropertyMap"/>
+        <property name="persistenceUnitName" value="master"/>
+        <property name="dataSource" ref="dataSourceProxy"/>
+        <property name="packagesToScan" value="com.hachiyae.jpa.entity"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <jpa:repositories base-package="com.hachiyae.jpa.repository"/>
+</beans>

@@ -19,18 +19,13 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-test.xml")
 @Transactional
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring-mysql-test.xml")
 @TransactionConfiguration(defaultRollback = true)
-public class TestClient {
+public class TestClientTest {
     @Autowired
     private CustomerRepository customerRepository;
-
-    @After
-    public void tearDown() throws Exception {
-        customerRepository.deleteAll();
-    }
 
     @Test
     public void test_isOverrideData() throws Exception {
