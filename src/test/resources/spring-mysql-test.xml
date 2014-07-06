@@ -36,10 +36,9 @@
         <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
         <property name="driverClassName" value="com.mysql.jdbc.ReplicationDriver"/>
         <property name="url" value="jdbc:mysql:replication://master_ip:3306,slave_ip:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;roundRobinLoadBalance=true"/>
-        <property name="username" value="slave_user"/>
-        <property name="password" value="password"/>
-        <!--<property name="defaultAutoCommit" value="true"/>-->
-        <property name="defaultAutoCommit" value="false"/>
+        <property name="username" value="test"/>
+        <property name="password" value="test"/>
+        <property name="defaultAutoCommit" value="true"/>
     </bean>
 
     <bean id="jpaVendorAdaptor" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">

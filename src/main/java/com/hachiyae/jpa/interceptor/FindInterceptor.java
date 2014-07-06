@@ -21,7 +21,7 @@ public class FindInterceptor {
         this.entityManager = entityManager;
     }
 
-    @Around("execution(public * com.hachiyae.jpa..*.findOne(..))")
+    @Around("execution(public * com.hachiyae.jpa..*.find*(..)) || execution(public * com.hachiyae.jpa..*.count*(..))")
     public Object proceed(ProceedingJoinPoint pjp) throws Throwable {
         SessionImpl session = entityManager.unwrap(SessionImpl.class);
         Connection connection = session.connection();
