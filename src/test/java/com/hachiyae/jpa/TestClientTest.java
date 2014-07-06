@@ -1,14 +1,11 @@
 package com.hachiyae.jpa;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.hibernate.internal.SessionImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +48,16 @@ public class TestClientTest {
         final Customer customer = helper.createData(data);
         final Customer save = customerRepository.save(customer);
 
-//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        //        EntityManager entityManager = entityManagerFactory.createEntityManager();
         //        SessionImpl delegate = (SessionImpl)(entityManager.getDelegate());
         //        delegate.connection();
         //        Session session = entityManager.unwrap(Session.class);
         //        session.setDefaultReadOnly(true);
         //        Customer actual = customerRepository.findOne(save.getId());
-        long id = save.getId();
         Customer actual = customerRepository.findOne(1L);
         assertNull(actual);
-        assertThat(customerRepository.count(), is(1L));
+        // スレーブから引いてくるので0
+        assertThat(customerRepository.count(), is(0L));
         //        Customer actual = (Customer)session.doReturningWork(new ReturningWork<Object>() {
         //            @Override
         //            public Object execute(Connection connection) throws SQLException {
@@ -81,8 +78,8 @@ public class TestClientTest {
         //        });
 
         //        Customer actual = customerRepository.findOne(save.getId());
-//        assertThat(actual.getFirstName(), is("あああ"));
-//        assertThat(actual.getLastName(), is("bar"));
+        //        assertThat(actual.getFirstName(), is("あああ"));
+        //        assertThat(actual.getLastName(), is("bar"));
     }
 
     @Test
