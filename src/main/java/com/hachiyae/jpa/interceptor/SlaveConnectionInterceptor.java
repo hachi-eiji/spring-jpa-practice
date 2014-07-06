@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class FindInterceptor {
+public class SlaveConnectionInterceptor {
     private EntityManager entityManager;
 
     @PersistenceContext
