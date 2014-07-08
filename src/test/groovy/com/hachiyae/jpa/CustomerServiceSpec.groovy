@@ -7,7 +7,6 @@ import com.hachiyae.jpa.service.CacheData
 import com.hachiyae.jpa.service.CustomerService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Specification
 
 @ContextConfiguration(locations = "classpath:spring-mysql-test.xml")
@@ -29,9 +28,9 @@ class CustomerServiceSpec extends Specification {
         data.put("firstName", "あああ");
         CustomerHelper helper = new CustomerHelper();
         Customer customer = helper.createData(data);
-        customerService.save(customer)
+        customerService.saveAndCache(customer)
         when:
-        def actual = customerService.getCustomers()
+        def actual = customerService.getCustomersFromCache()
         then:
         actual.size() == 1
         cacheData.get().size() == 1

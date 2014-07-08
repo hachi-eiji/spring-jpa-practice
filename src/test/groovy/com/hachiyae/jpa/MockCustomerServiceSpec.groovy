@@ -29,7 +29,7 @@ class MockCustomerServiceSpec extends Specification {
         customerService.metaClass.setAttribute(customerService, "customerRepository", mock)
         customerService.metaClass.setAttribute(customerService, "cacheData", cache)
         when:
-        def actual = customerService.getCustomers()
+        def actual = customerService.getCustomersFromCache()
         then:
         actual[0].firstName == "いいい"
         cache.get().size() == 1

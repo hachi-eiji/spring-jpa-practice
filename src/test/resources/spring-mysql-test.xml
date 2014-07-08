@@ -35,7 +35,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
         <property name="driverClassName" value="com.mysql.jdbc.ReplicationDriver"/>
-        <property name="url" value="jdbc:mysql:replication://master_ip:3306,slave_ip:3306,slave_ip2:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;roundRobinLoadBalance=true"/>
+        <property name="url" value="jdbc:mysql:replication://master_ip:3306,slave_ip:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;roundRobinLoadBalance=true"/>
         <property name="username" value="test"/>
         <property name="password" value="test"/>
         <property name="defaultAutoCommit" value="true"/>

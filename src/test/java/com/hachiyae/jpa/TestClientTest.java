@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.hachiyae.jpa.entity.Customer;
 import com.hachiyae.jpa.helper.CustomerHelper;
-import com.hachiyae.jpa.repository.CustomerRepository;
+import com.hachiyae.jpa.service.CustomerService;
 
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
@@ -31,7 +31,7 @@ import static org.junit.Assert.*;
 @TransactionConfiguration
 public class TestClientTest {
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
@@ -39,61 +39,22 @@ public class TestClientTest {
     private TransactionAwareDataSourceProxy dataSourceProxy;
 
 
-    @Transactional
     @Test
     public void test_isOverrideData() throws Exception {
         Map<String, Object> data = new HashMap<>();
         data.put("firstName", "あああ");
         CustomerHelper helper = new CustomerHelper();
         final Customer customer = helper.createData(data);
-        final Customer save = customerRepository.save(customer);
-
-        //        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        //        SessionImpl delegate = (SessionImpl)(entityManager.getDelegate());
-        //        delegate.connection();
-        //        Session session = entityManager.unwrap(Session.class);
-        //        session.setDefaultReadOnly(true);
-        //        Customer actual = customerRepository.findOne(save.getId());
-        Customer actual = customerRepository.findOne(1L);
-        assertNull(actual);
-        // スレーブから引いてくるので0
-        assertThat(customerRepository.count(), is(0L));
-        //        Customer actual = (Customer)session.doReturningWork(new ReturningWork<Object>() {
-        //            @Override
-        //            public Object execute(Connection connection) throws SQLException {
-        //                connection.setReadOnly(true);
-        //                connection.setAutoCommit(false);
-        //                PreparedStatement ps = connection.prepareStatement("select * from customer where id = 1");
-        //                ResultSet resultSet = ps.executeQuery();
-        //                while(resultSet.next()){
-        //                    Customer customer1 = new Customer();
-        //                    customer1.setId(resultSet.getInt(1));
-        //                    customer1.setFirstName(resultSet.getString(2));
-        //                    customer1.setLastName(resultSet.getString(3));
-        //                    return customer1;
-        //                }
-        //                return null;
-        //                //                return customerRepository.findOne(save.getId());
-        //            }
-        //        });
-
-        //        Customer actual = customerRepository.findOne(save.getId());
-        //        assertThat(actual.getFirstName(), is("あああ"));
-        //        assertThat(actual.getLastName(), is("bar"));
+        customerService.save(customer);
+        Customer actual = customerService.getCustomer(1L);
+        long count = customerService.count();
+        assertNotNull(actual);
+        assertThat(count, is(1L));
     }
 
-    @Test
-    public void test_isOverrideNullData() throws Exception {
-        Map<String, Object> data = new HashMap<>();
-        data.put("firstName", "あああ");
-        data.put("secondName", null);
-        CustomerHelper helper = new CustomerHelper();
-        Customer customer = helper.createData(data);
-        Customer save = customerRepository.save(customer);
-
-        Customer actual = customerRepository.findOne(save.getId());
-        assertThat(actual.getFirstName(), is("あああ"));
-        assertNotNull(actual.getLastName());
+    @After
+    public void tearDown() throws Exception {
+        JdbcTestUtils.dropTables(new JdbcTemplate(dataSource), "customer");
     }
 
     @Autowired
